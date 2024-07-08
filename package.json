@@ -1,0 +1,16 @@
+{
+  "name": "mongoexpressproject",
+  "version": "1.0.0",
+  "description": "mongo and express project",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --watch app.js"
+  },
+  "author": "KHS",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2"
+  }
+}
