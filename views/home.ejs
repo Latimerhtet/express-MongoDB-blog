@@ -8,6 +8,29 @@
   </head>
   <body>
     <%- include ('./includes/navbar') -%>
-    <h2 style="text-align: center">Posts</h2>
+    <section class="postsBox">
+      <h2 style="text-align: center">Posts</h2>
+      <div>
+        <% if(postsArr.length === 0) { %>
+        <div class="postBox">
+          <div>
+            <p>There is no posts to see</p>
+            <p>You can start create your own post!!</p>
+          </div>
+          <button>
+            <a href="/admin/addPost">Create new Post</a>
+          </button>
+        </div>
+        <% } %> <% for(let post of postsArr) { %>
+        <div class="postBox">
+          <img src="<%= post.imageUrl %>" alt="post image" />
+          <div class="titlebox">
+            <p><%= post.title %></p>
+            <button><a href="/post/<%= post._id %>">See more</a></button>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </section>
   </body>
 </html>

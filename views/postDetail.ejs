@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <%- include ('./includes/navbar') -%>
+    <section class="postDetail-Box">
+      <div class="postDetail">
+        <div class="btnAndtitle">
+          <h1><%= post.title %></h1>
+          <div>
+            <button><a href="/">Back</a></button>
+            <button><a href="/">Delete</a></button>
+            <button><a href="/">Edit</a></button>
+          </div>
+        </div>
+
+        <img src="<%= post.imageUrl %>" alt="post image" />
+        <p><%= post.description %></p>
+      </div>
+    </section>
+  </body>
+</html>

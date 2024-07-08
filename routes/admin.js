@@ -1,9 +1,7 @@
 const express = require("express");
-
+const postControllers = require("../controllers/post");
 const router = express.Router();
 
-// router.use("/addPost", (req, res) => {
-//   res.render("addPost", { title: "Add Post" });
-// });
-
+router.get("/addPost", postControllers.renderAddPostPage);
+router.post("/", postControllers.createPost);
 module.exports = router;
