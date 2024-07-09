@@ -9,21 +9,31 @@
   <body>
     <%- include ('./includes/navbar') -%>
     <section class="form-main-div">
-      <form action="/admin" method="post">
-        <div class="addPostHeading">
-          <h2>Add your post here</h2>
-          <button>
-            <a href="/">Back</a>
-          </button>
+      <form action="/admin/editPost" method="post">
+        <div class="editPostHeading">
+          <h2>Edit your post</h2>
+          <button><a href="/post/<%= post._id%>">Back</a></button>
         </div>
-
+        <input type="text" name="postId" value="<%= post._id %>" hidden />
         <div class="inputDiv">
           <label for="title">Title</label>
-          <input type="text" id="title" name="title" required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value="<%= post.title %>"
+            required
+          />
         </div>
         <div class="inputDiv">
           <label for="imgurl">Image URL</label>
-          <input type="text" id="imgurl" name="imageUrl" required />
+          <input
+            type="text"
+            id="imgurl"
+            name="imageUrl"
+            value="<%= post.imageUrl %>"
+            required
+          />
         </div>
         <div class="inputDiv">
           <label for="description">Description</label>
@@ -33,9 +43,11 @@
             cols="30"
             rows="10"
             required
-          ></textarea>
+          >
+<%= post.description %></textarea
+          >
         </div>
-        <button type="submit">Add Post</button>
+        <button type="submit">Edit Post</button>
       </form>
     </section>
   </body>

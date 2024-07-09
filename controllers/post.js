@@ -32,3 +32,38 @@ exports.getPost = (req, res) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.getEditPost = (req, res) => {
+  const postId = req.params.postId;
+  Post.getPost(postId)
+    .then((post) => {
+      if (!post) {
+        return res.redirect("/");
+      }
+      res.render("editPost", { title: post.title, post });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.editPost = (req, res) => {
+  const { title, description, imageUrl, postId } = req.body;
+  const post = new Post(title, description, imageUrl, postId);
+  post
+    .create()
+    .then((result) => {
+      console.log("Post updated!");
+      res.redirect("/");
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.deletePost = (req, res) => {
+  const postId = req.params.postId;
+
+  Post.deletePost(postId)
+    .then(() => {
+      console.log("post deleted");
+      res.redirect("/");
+    })
+    .catch((err) => console.log(err));
+};
