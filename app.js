@@ -13,12 +13,18 @@ app.set("views", "views");
 //routes import
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
-const { error } = require("console");
+const User = require("./models/user");
 
 // allow static files for CSS
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  User.findById("668f881a9a0f995a5f3a51c6").then((user) => {
+    req.user = user;
+    next();
+  });
+});
 // routes
 app.use(postRoutes);
 app.use("/admin", adminRoutes);
@@ -28,5 +34,16 @@ mongoose
   .then(() => {
     app.listen(8000);
     console.log("connected to mongoDb");
+    return User.findOne().then((user) => {
+      if (!user) {
+        User.create({
+          username: "Kaung",
+          email: "kaung@gmail.com",
+          password: "kaung123",
+        });
+      }
+      return user;
+    });
   })
+  .then((result) => console.log(result))
   .catch((err) => console.log(err));

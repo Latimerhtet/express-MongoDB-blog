@@ -6,6 +6,7 @@ exports.createPost = (req, res) => {
     title,
     description,
     imageUrl,
+    userId: req.user,
   })
     .then((result) => {
       console.log(result);
@@ -20,8 +21,11 @@ exports.renderAddPostPage = (req, res) => {
 
 exports.getPosts = (req, res) => {
   Post.find()
+    .select("title imageUrl")
+    .populate("userId", "username")
     .sort({ title: -1 })
     .then((posts) => {
+      console.log(posts);
       res.render("home", { title: "Posts", postsArr: posts });
     })
     .catch((err) => console.log(err));
