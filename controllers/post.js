@@ -26,7 +26,11 @@ exports.getPosts = (req, res) => {
     .sort({ title: -1 })
     .then((posts) => {
       console.log(posts);
-      res.render("home", { title: "Posts", postsArr: posts });
+      res.render("home", {
+        title: "Posts",
+        postsArr: posts,
+        isLogin: req.session.isLogin ? true : false,
+      });
     })
     .catch((err) => console.log(err));
 };

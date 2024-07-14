@@ -4,8 +4,13 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require("dotenv").config();
+const session = require("express-session");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const store = new MongoDBStore({
+  uri: process.env.MONGODB_URI,
+  collection: "sessions",
+});
 // set view engines for ejs
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -13,12 +18,20 @@ app.set("views", "views");
 //routes import
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
+const authRoutes = require("./routes/auth");
 const User = require("./models/user");
 
 // allow static files for CSS
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(
+  session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
 app.use((req, res, next) => {
   User.findById("668f881a9a0f995a5f3a51c6").then((user) => {
     req.user = user;
@@ -28,6 +41,7 @@ app.use((req, res, next) => {
 // routes
 app.use(postRoutes);
 app.use("/admin", adminRoutes);
+app.use(authRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URL)

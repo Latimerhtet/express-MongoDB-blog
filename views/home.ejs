@@ -9,6 +9,18 @@
   <body>
     <%- include ('./includes/navbar') -%>
     <section class="postsBox">
+      <% if(!isLogin) { %>
+      <div>
+        <button><a href="/login">Login</a></button>
+      </div>
+      <% } else { %>
+      <div>
+        <form style="display: inline-block" action="/logout" method="post">
+          <button type="submit">Logout</button>
+        </form>
+        <button><a href="/admin/addPost">Create Post</a></button>
+      </div>
+      <% } %>
       <h2 style="text-align: center">Posts</h2>
       <div>
         <% if(postsArr.length === 0) { %>
