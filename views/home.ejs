@@ -12,6 +12,7 @@
       <% if(!isLogin) { %>
       <div>
         <button><a href="/login">Login</a></button>
+        <button><a href="/register">Register</a></button>
       </div>
       <% } else { %>
       <div>
@@ -38,9 +39,6 @@
           <img src="<%= post.imageUrl %>" alt="post image" />
           <div class="titlebox">
             <p style="font-size: 20px; font-weight: bold"><%= post.title %></p>
-            <p style="font-size: 15px; letter-spacing: 2px">
-              Posted by <%= post.userId.username %>
-            </p>
             <button><a href="/post/<%= post._id %>">See more</a></button>
           </div>
         </div>
