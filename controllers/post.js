@@ -37,9 +37,10 @@ exports.getPosts = (req, res) => {
 
 exports.getPost = (req, res) => {
   const postId = req.params.postId;
+  const isLogin = req.session.isLogin ? true : false;
   Post.findById(postId)
     .then((post) => {
-      res.render("postDetail", { title: post.title, post });
+      res.render("postDetail", { title: post.title, post, isLogin });
     })
     .catch((err) => console.log(err));
 };

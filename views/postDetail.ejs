@@ -14,10 +14,12 @@
           <h1><%= post.title %></h1>
           <div class="buttons">
             <button><a href="/">Back</a></button>
+            <% if(isLogin) { %>
             <form action="/admin/delete/<%= post._id %>" method="post">
               <button type="submit">Delete</button>
             </form>
             <button><a href="/admin/edit/<%= post._id %>">Edit</a></button>
+            <% } %>
           </div>
         </div>
         <img src="<%= post.imageUrl %>" alt="post image" />
