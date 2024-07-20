@@ -3,10 +3,11 @@ const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const flash = require("connect-flash");
 const dotenv = require("dotenv").config();
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: "sessions",
@@ -20,6 +21,7 @@ const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const User = require("./models/user");
+const { isLogin } = require("./middleware/is-login");
 
 // allow static files for CSS
 app.use(express.static(path.join(__dirname, "public")));
@@ -32,10 +34,23 @@ app.use(
     store: store,
   })
 );
-
+// middleware
+app.use(flash());
+app.use((req, res, next) => {
+  if (req.session.isLogin === undefined) {
+    return next();
+  }
+  User.findById(req.session.userInfo._id)
+    .select("_id email")
+    .then((user) => {
+      req.user = user;
+      next();
+    });
+});
 // routes
+
 app.use(postRoutes);
-app.use("/admin", adminRoutes);
+app.use("/admin", isLogin, adminRoutes);
 app.use(authRoutes);
 
 mongoose

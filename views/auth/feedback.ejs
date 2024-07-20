@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <%- include ('../includes/navbar') -%>
+    <section style="text-align: center">
+      <h1>Password reset link has been sent to your email</h1>
+      <a
+        style="color: black"
+        href="https://mail.google.com/mail/u/0/#inbox"
+        target="_blank"
+        >Click here to open gmail app</a
+      >
+      <div
+        style="
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 30px;
+        "
+      >
+        <button><a href="/">Go back</a></button>
+      </div>
+    </section>
+  </body>
+</html>

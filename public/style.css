@@ -98,3 +98,16 @@ form {
   justify-content: space-between;
   align-items: center;
 }
+.errorMessage {
+  padding: 8px 6px;
+  color: red;
+  background-color: rgb(248, 178, 178);
+  border-radius: 5px;
+}
+
+.forgotpasswordRef {
+  color: #000;
+}
+.forgotpasswordRef:hover {
+  text-decoration: underline;
+}

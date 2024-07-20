@@ -9,25 +9,21 @@
   <body>
     <%- include ('../includes/navbar') -%>
     <section class="form-main-div">
-      <form action="/register" method="post">
+      <form action="/reset" method="post">
         <div class="addPostHeading">
-          <h2>Register a new account</h2>
+          <h2>Reset your password</h2>
           <button>
             <a href="/">Back</a>
           </button>
         </div>
-        <% if(errMessage) { %>
-        <p class="errorMessage"><%= errMessage %></p>
+        <% if(errorMessage) { %>
+        <p class="errorMessage"><%= errorMessage %></p>
         <% } %>
         <div class="inputDiv">
           <label for="email">Email</label>
           <input type="text" id="email" name="email" />
         </div>
-        <div class="inputDiv">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" />
-        </div>
-        <button type="submit">Register account</button>
+        <button type="submit">Reset</button>
       </form>
     </section>
   </body>

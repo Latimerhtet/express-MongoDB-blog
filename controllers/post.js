@@ -22,7 +22,7 @@ exports.renderAddPostPage = (req, res) => {
 exports.getPosts = (req, res) => {
   Post.find()
     .select("title imageUrl")
-    .populate("userId", "username")
+    .populate("userId", "email")
     .sort({ title: -1 })
     .then((posts) => {
       console.log(posts);
