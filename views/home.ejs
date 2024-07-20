@@ -19,12 +19,14 @@
         <form style="display: inline-block" action="/logout" method="post">
           <button type="submit">Logout</button>
         </form>
-        <button><a href="/admin/addPost">Create Post</a></button>
+        <button>
+          <a href="/admin/addPost">Create Post as <%= currentUser %></a>
+        </button>
       </div>
       <% } %>
       <h2 style="text-align: center">Posts</h2>
       <div>
-        <% if(postsArr.length === 0) { %>
+        <% if(postsArr.length === 0 && isLogin) { %>
         <div class="postBox">
           <div>
             <p>There is no posts to see</p>

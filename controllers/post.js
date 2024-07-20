@@ -30,6 +30,7 @@ exports.getPosts = (req, res) => {
         title: "Posts",
         postsArr: posts,
         isLogin: req.session.isLogin ? true : false,
+        currentUser: req.session.userInfo ? req.session.userInfo.email : "",
       });
     })
     .catch((err) => console.log(err));
@@ -40,7 +41,12 @@ exports.getPost = (req, res) => {
   const isLogin = req.session.isLogin ? true : false;
   Post.findById(postId)
     .then((post) => {
-      res.render("postDetail", { title: post.title, post, isLogin });
+      res.render("postDetail", {
+        title: post.title,
+        post,
+        isLogin,
+        currentUserId: req.session.userInfo ? req.session.userInfo._id : "",
+      });
     })
     .catch((err) => console.log(err));
 };
@@ -59,17 +65,18 @@ exports.getEditPost = (req, res) => {
 
 exports.editPost = (req, res) => {
   const { title, description, imageUrl, postId } = req.body;
-
   Post.findById(postId)
     .then((post) => {
+      if (post.userId.toString() !== req.session.userInfo._id.toString()) {
+        return res.redirect("/");
+      }
       post.title = title;
       post.description = description;
       post.imageUrl = imageUrl;
-      return post.save();
-    })
-    .then((result) => {
-      console.log("Post updated!");
-      res.redirect("/");
+      return post.save().then((result) => {
+        console.log("Post updated!");
+        res.redirect("/");
+      });
     })
     .catch((err) => console.log(err));
 };
@@ -77,7 +84,7 @@ exports.editPost = (req, res) => {
 exports.deletePost = (req, res) => {
   const postId = req.params.postId;
 
-  Post.findByIdAndDelete(postId)
+  Post.deleteOne({ _id: postId, userId: req.user._id })
     .then(() => {
       console.log("post deleted");
       res.redirect("/");

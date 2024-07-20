@@ -14,7 +14,8 @@
           <h1><%= post.title %></h1>
           <div class="buttons">
             <button><a href="/">Back</a></button>
-            <% if(isLogin) { %>
+            <% if(isLogin && currentUserId.toString() ===
+            post.userId.toString()) { %>
             <form action="/admin/delete/<%= post._id %>" method="post">
               <button type="submit">Delete</button>
             </form>
