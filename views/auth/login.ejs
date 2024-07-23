@@ -21,11 +21,21 @@
         <% } %>
         <div class="inputDiv">
           <label for="email">Email</label>
-          <input type="text" id="email" name="email" />
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value="<%= oldData.email %>"
+          />
         </div>
         <div class="inputDiv">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="<%= oldData.password %>"
+          />
         </div>
         <a class="forgotpasswordRef" href="/resetPassword"
           >Forgotten your password?</a

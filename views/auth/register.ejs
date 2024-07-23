@@ -16,16 +16,26 @@
             <a href="/">Back</a>
           </button>
         </div>
-        <% if(errMessage) { %>
-        <p class="errorMessage"><%= errMessage %></p>
-        <% } %>
+        <% if(errMessage) { for (let err of errMessage){ %>
+        <p class="errorMessage"><%= err.msg %></p>
+        <% } } %>
         <div class="inputDiv">
           <label for="email">Email</label>
-          <input type="text" id="email" name="email" />
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value="<%= oldData.email %>"
+          />
         </div>
         <div class="inputDiv">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value="<%= oldData.password %>"
+          />
         </div>
         <button type="submit">Register account</button>
       </form>

@@ -9,21 +9,35 @@
   <body>
     <%- include ('./includes/navbar') -%>
     <section class="form-main-div">
-      <form action="/admin" method="post">
+      <form action="/admin" method="post" novalidate>
         <div class="addPostHeading">
           <h2>Add your post here</h2>
           <button>
             <a href="/">Back</a>
           </button>
         </div>
-
+        <% if(errorMessage) { %>
+        <p class="errorMessage"><%= errorMessage %></p>
+        <% } %>
         <div class="inputDiv">
           <label for="title">Title</label>
-          <input type="text" id="title" name="title" required />
+          <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            value="<%= oldData.title %>"
+          />
         </div>
         <div class="inputDiv">
           <label for="imgurl">Image URL</label>
-          <input type="text" id="imgurl" name="imageUrl" required />
+          <input
+            type="text"
+            id="imgurl"
+            name="imageUrl"
+            required
+            value="<%= oldData.imageUrl %>"
+          />
         </div>
         <div class="inputDiv">
           <label for="description">Description</label>
@@ -33,7 +47,9 @@
             cols="30"
             rows="10"
             required
-          ></textarea>
+          >
+<%= oldData.description %></textarea
+          >
         </div>
         <button type="submit">Add Post</button>
       </form>

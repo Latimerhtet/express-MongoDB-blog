@@ -15,7 +15,7 @@
           <div class="buttons">
             <button><a href="/">Back</a></button>
             <% if(isLogin && currentUserId.toString() ===
-            post.userId.toString()) { %>
+            post.userId._id.toString()) { %>
             <form action="/admin/delete/<%= post._id %>" method="post">
               <button type="submit">Delete</button>
             </form>
@@ -23,6 +23,10 @@
             <% } %>
           </div>
         </div>
+        <p>Posted by <%= post.userId.email %></p>
+        <% if(time) { %>
+        <p>Uploaded at <%= time %></p>
+        <% } %>
         <img src="<%= post.imageUrl %>" alt="post image" />
         <p><%= post.description %></p>
       </div>

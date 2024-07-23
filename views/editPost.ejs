@@ -9,19 +9,29 @@
   <body>
     <%- include ('./includes/navbar') -%>
     <section class="form-main-div">
-      <form action="/admin/editPost" method="post">
+      <form action="/admin/editPost" method="post" novalidate>
         <div class="editPostHeading">
           <h2>Edit your post</h2>
-          <button><a href="/post/<%= post._id%>">Back</a></button>
+          <button>
+            <a href="/post/<%= isValidationFail? postId : post._id %>">Back</a>
+          </button>
         </div>
-        <input type="text" name="postId" value="<%= post._id %>" hidden />
+        <% if(errorMessage) { %>
+        <p class="errorMessage"><%= errorMessage %></p>
+        <% } %>
+        <input
+          type="text"
+          name="postId"
+          value="<%= isValidationFail ? oldData.postId : post._id %>"
+          hidden
+        />
         <div class="inputDiv">
           <label for="title">Title</label>
           <input
             type="text"
             id="title"
             name="title"
-            value="<%= post.title %>"
+            value="<%= isValidationFail ? oldData.title : post.title %>"
             required
           />
         </div>
@@ -31,7 +41,7 @@
             type="text"
             id="imgurl"
             name="imageUrl"
-            value="<%= post.imageUrl %>"
+            value="<%= isValidationFail ? oldData.imageUrl : post.imageUrl %>"
             required
           />
         </div>
@@ -44,7 +54,7 @@
             rows="10"
             required
           >
-<%= post.description %></textarea
+<%= isValidationFail ? oldData.description : post.description %></textarea
           >
         </div>
         <button type="submit">Edit Post</button>
