@@ -5,9 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/style.css" />
+    <script
+      src="https://kit.fontawesome.com/1ca4314e35.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <%- include ('./includes/navbar') -%>
+    <div class="heroSection-para">
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora,
+        consectetur incidunt sed beatae atque commodi eius, ab corporis dolorem
+        nobis aspernatur pariatur quam voluptate, nihil quis quaerat quia. Id,
+        amet. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
+        corrupti praesentium, ex facilis veniam saepe, commodi totam, dolores
+        est reiciendis excepturi illo blanditiis similique? Illo quis sunt esse
+        pariatur at.
+      </p>
+    </div>
     <section class="postsBox">
       <% if(!isLogin) { %>
       <div>
@@ -24,8 +39,9 @@
         </button>
       </div>
       <% } %>
-      <h2 style="text-align: center">Posts</h2>
-      <div>
+      <div class="hr"></div>
+      <h2>Recently added Posts</h2>
+      <div style="margin: 10px 20px">
         <% if(postsArr.length === 0 && isLogin) { %>
         <div class="postBox">
           <div>
@@ -36,16 +52,25 @@
             <a href="/admin/addPost">Create new Post</a>
           </button>
         </div>
-        <% } %> <% for(let post of postsArr) { %>
-        <div class="postBox">
-          <img src="<%= post.imageUrl %>" alt="post image" />
-          <div class="titlebox">
-            <p style="font-size: 20px; font-weight: bold"><%= post.title %></p>
-            <p>Post by <%= post.userId.email %></p>
-            <button><a href="/post/<%= post._id %>">See more</a></button>
-          </div>
-        </div>
         <% } %>
+        <div class="posts-Flexbox">
+          <% for(let post of postsArr) { %>
+          <div class="postBox">
+            <img src="<%= post.imageUrl %>" alt="post image" />
+            <div class="titlebox">
+              <p style="font-size: 25px; font-weight: bold">
+                <%= post.title %>
+              </p>
+              <p>Post by <span class=""><%= post.userId.email %></span></p>
+              <button>
+                <a href="/post/<%= post._id %>"
+                  >See more <i class="fa-solid fa-forward"></i
+                ></a>
+              </button>
+            </div>
+          </div>
+          <% } %>
+        </div>
       </div>
     </section>
   </body>

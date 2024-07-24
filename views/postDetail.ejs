@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="/style.css" />
+    <script
+      src="https://kit.fontawesome.com/1ca4314e35.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <%- include ('./includes/navbar') -%>
     <section class="postDetail-Box">
       <div class="postDetail">
         <div class="btnAndtitle">
           <h1><%= post.title %></h1>
           <div class="buttons">
-            <button><a href="/">Back</a></button>
+            <button>
+              <a href="/"><i class="fa-solid fa-backward"></i></a>
+            </button>
             <% if(isLogin && currentUserId.toString() ===
             post.userId._id.toString()) { %>
             <form action="/admin/delete/<%= post._id %>" method="post">
-              <button type="submit">Delete</button>
+              <button type="submit"><i class="fa-solid fa-trash"></i></button>
             </form>
-            <button><a href="/admin/edit/<%= post._id %>">Edit</a></button>
+            <button>
+              <a href="/admin/edit/<%= post._id %>"
+                ><i class="fa-regular fa-pen-to-square"></i
+              ></a>
+            </button>
             <% } %>
           </div>
         </div>

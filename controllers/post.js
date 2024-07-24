@@ -1,7 +1,7 @@
 const Post = require("../models/post");
 const { validationResult } = require("express-validator");
 const { formatISO } = require("date-fns");
-exports.createPost = (req, res) => {
+exports.createPost = (req, res, next) => {
   const { title, description, imageUrl } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -21,10 +21,14 @@ exports.createPost = (req, res) => {
       console.log(result);
       res.redirect("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong");
+      return next(error);
+    });
 };
 
-exports.renderAddPostPage = (req, res) => {
+exports.renderAddPostPage = (req, res, next) => {
   return res.render("addPost", {
     title: "Add Post",
     errorMessage: "",
@@ -32,7 +36,7 @@ exports.renderAddPostPage = (req, res) => {
   });
 };
 
-exports.getPosts = (req, res) => {
+exports.getPosts = (req, res, next) => {
   Post.find()
     .select("title imageUrl")
     .populate("userId", "email")
@@ -46,10 +50,14 @@ exports.getPosts = (req, res) => {
         currentUser: req.session.userInfo ? req.session.userInfo.email : "",
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong");
+      return next(error);
+    });
 };
 
-exports.getPost = (req, res) => {
+exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   const isLogin = req.session.isLogin ? true : false;
   Post.findById(postId)
@@ -66,10 +74,14 @@ exports.getPost = (req, res) => {
           : undefined,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("The post with the given ID is not found");
+      return next(error);
+    });
 };
 
-exports.getEditPost = (req, res) => {
+exports.getEditPost = (req, res, next) => {
   const postId = req.params.postId;
   Post.findById(postId)
     .then((post) => {
@@ -89,10 +101,14 @@ exports.getEditPost = (req, res) => {
         isValidationFail: false,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong with editing post");
+      return next(error);
+    });
 };
 
-exports.editPost = (req, res) => {
+exports.editPost = (req, res, next) => {
   const { title, description, imageUrl, postId } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -117,10 +133,14 @@ exports.editPost = (req, res) => {
         res.redirect("/");
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong with editing post");
+      return next(error);
+    });
 };
 
-exports.deletePost = (req, res) => {
+exports.deletePost = (req, res, next) => {
   const postId = req.params.postId;
 
   Post.deleteOne({ _id: postId, userId: req.user._id })
@@ -128,5 +148,9 @@ exports.deletePost = (req, res) => {
       console.log("post deleted");
       res.redirect("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong with deleting post");
+      return next(error);
+    });
 };

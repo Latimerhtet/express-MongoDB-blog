@@ -21,6 +21,8 @@ const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const User = require("./models/user");
+const errorPageHandler = require("./controllers/error");
+
 const { isLogin } = require("./middleware/is-login");
 
 // allow static files for CSS
@@ -53,6 +55,8 @@ app.use(postRoutes);
 app.use("/admin", isLogin, adminRoutes);
 app.use(authRoutes);
 
+app.all("*", errorPageHandler.get404Page);
+app.use(errorPageHandler.get500Page);
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
