@@ -7,11 +7,32 @@ const flash = require("connect-flash");
 const dotenv = require("dotenv").config();
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const multer = require("multer");
 
 const store = new MongoDBStore({
   uri: process.env.MONGODB_URI,
   collection: "sessions",
 });
+const storageConfigure = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + "-" + file.originalname);
+  },
+});
+const fileFilterConfigure = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 // set view engines for ejs
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -27,7 +48,13 @@ const { isLogin } = require("./middleware/is-login");
 
 // allow static files for CSS
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  multer({ storage: storageConfigure, fileFilter: fileFilterConfigure }).single(
+    "imageUrl"
+  )
+);
 app.use(
   session({
     secret: process.env.SESSION_KEY,

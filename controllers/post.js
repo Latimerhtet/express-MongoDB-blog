@@ -1,20 +1,36 @@
 const Post = require("../models/post");
 const { validationResult } = require("express-validator");
 const { formatISO } = require("date-fns");
+const imageFileDelete = require("../utils/imagefileDelete");
+const PDFDocument = require("pdfkit");
+const blobStream = require("blob-stream");
+const POST_PER_PAGE = 3;
+const fs = require("fs");
+const expath = require("path");
+// Creating post
 exports.createPost = (req, res, next) => {
-  const { title, description, imageUrl } = req.body;
+  const { title, description } = req.body;
+  const image = req.file;
+  console.log("This is the error for file" + image);
+  if (image === undefined) {
+    return res.status(422).render("addPost", {
+      title: "Add Post",
+      errorMessage: "Image file must be types of jpeg, jpg or png.",
+      oldData: { title, description },
+    });
+  }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).render("addPost", {
       title: "Add Post",
       errorMessage: errors.array()[0].msg,
-      oldData: { title, description, imageUrl },
+      oldData: { title, description },
     });
   }
   Post.create({
     title,
     description,
-    imageUrl,
+    imageUrl: image.path,
     userId: req.user,
   })
     .then((result) => {
@@ -28,6 +44,7 @@ exports.createPost = (req, res, next) => {
     });
 };
 
+// rendering add post page
 exports.renderAddPostPage = (req, res, next) => {
   return res.render("addPost", {
     title: "Add Post",
@@ -36,19 +53,41 @@ exports.renderAddPostPage = (req, res, next) => {
   });
 };
 
+// rendering home page with all the posts
 exports.getPosts = (req, res, next) => {
+  // for pagination
+  const pageNo = +req.query.page || 1;
+  let totalPost;
   Post.find()
-    .select("title imageUrl")
-    .populate("userId", "email")
-    .sort({ title: -1 })
+    .countDocuments()
+    .then((totalPostCount) => {
+      totalPost = totalPostCount;
+      return Post.find()
+        .select("title imageUrl")
+        .populate("userId", "email")
+        .sort({ createdAt: -1 })
+        .skip((pageNo - 1) * POST_PER_PAGE)
+        .limit(POST_PER_PAGE);
+    })
     .then((posts) => {
-      console.log(posts);
-      res.render("home", {
-        title: "Posts",
-        postsArr: posts,
-        isLogin: req.session.isLogin ? true : false,
-        currentUser: req.session.userInfo ? req.session.userInfo.email : "",
-      });
+      if (posts.length > 0) {
+        return res.render("home", {
+          title: "Posts",
+          postsArr: posts,
+          isLogin: req.session.isLogin ? true : false,
+          currentUser: req.session.userInfo ? req.session.userInfo.email : "",
+          currentPage: pageNo,
+          hasNextPage: POST_PER_PAGE * pageNo < totalPost,
+          hasPreviousPage: pageNo > 1,
+          nextPage: pageNo + 1,
+          previousPage: pageNo - 1,
+        });
+      } else {
+        return res.status(422).render("errors/404", {
+          title: "Posts not found",
+          errorMessage: "Unvalid page Number!",
+        });
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -57,6 +96,7 @@ exports.getPosts = (req, res, next) => {
     });
 };
 
+// rendering post detail page
 exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   const isLogin = req.session.isLogin ? true : false;
@@ -81,6 +121,7 @@ exports.getPost = (req, res, next) => {
     });
 };
 
+// rendering editing post page
 exports.getEditPost = (req, res, next) => {
   const postId = req.params.postId;
   Post.findById(postId)
@@ -96,7 +137,6 @@ exports.getEditPost = (req, res, next) => {
         oldData: {
           title: undefined,
           description: undefined,
-          imageUrl: undefined,
         },
         isValidationFail: false,
       });
@@ -108,8 +148,19 @@ exports.getEditPost = (req, res, next) => {
     });
 };
 
+// editing post function
 exports.editPost = (req, res, next) => {
-  const { title, description, imageUrl, postId } = req.body;
+  const { title, description, postId } = req.body;
+  const image = req.file;
+  // if (image === undefined) {
+  //   return res.status(422).render("editPost", {
+  //     title,
+  //     postId,
+  //     oldData: { title, description },
+  //     errorMessage: "Image file must be types of jpeg, jpg or png.",
+  //     isValidationFail: true,
+  //   });
+  // }
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).render("editPost", {
@@ -127,7 +178,10 @@ exports.editPost = (req, res, next) => {
       }
       post.title = title;
       post.description = description;
-      post.imageUrl = imageUrl;
+      if (image) {
+        imageFileDelete(post.imageUrl);
+        post.imageUrl = image.path;
+      }
       return post.save().then((result) => {
         console.log("Post updated!");
         res.redirect("/");
@@ -140,10 +194,17 @@ exports.editPost = (req, res, next) => {
     });
 };
 
+// deleting post function
 exports.deletePost = (req, res, next) => {
   const postId = req.params.postId;
-
-  Post.deleteOne({ _id: postId, userId: req.user._id })
+  Post.findById(postId)
+    .then((post) => {
+      if (!post) {
+        return res.redirect("/");
+      }
+      imageFileDelete(post.imageUrl);
+      return Post.deleteOne({ _id: postId, userId: req.user._id });
+    })
     .then(() => {
       console.log("post deleted");
       res.redirect("/");
@@ -153,4 +214,50 @@ exports.deletePost = (req, res, next) => {
       const error = new Error("Something went wrong with deleting post");
       return next(error);
     });
+};
+
+//saving file as pdf
+exports.savePost = (req, res, next) => {
+  const id = req.params.postId;
+  let postData = {};
+  Post.findById(id)
+    .populate("userId", "email")
+    .lean()
+    .then((post) => {
+      const date = new Date();
+      const outputFilePath = `${expath.join(
+        __dirname,
+        "../public/pdf",
+        date.getTime() + ".pdf"
+      )}`;
+      // console.log("This is post Data", postData);
+      const doc = new PDFDocument({ font: "Courier", size: "A4" });
+      const stream = doc.pipe(blobStream());
+      doc.pipe(fs.createWriteStream(outputFilePath));
+      doc.fontSize(10).text(post.title, { align: "left" });
+      doc.moveDown();
+      doc
+        .image(`${expath.join(__dirname, "../", post.imageUrl)}`, 320, 145, {
+          width: 200,
+          height: 100,
+        })
+        .text("Stretch", 320, 130);
+      doc.fontSize(8).text(post.description, { align: "center" });
+      doc.end();
+      // stream.on("finish", () => {
+      //   iframe.src = stream.toBlobURL("application/pdf");
+      // });
+    })
+    .catch((err) => {
+      console.log(err);
+      const error = new Error("Something went wrong with downloading post");
+      return next(error);
+    });
+
+  // stream.on("finish", () => {
+  //   iframe.src = stream.toBlobURL("application/pdf");
+  // });
+  // console.log(err);
+  // const error = new Error("Something went wrong with downloading post");
+  // return next(error);
 };

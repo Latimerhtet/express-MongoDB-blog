@@ -31,12 +31,13 @@
       </div>
       <% } else { %>
       <div>
-        <form style="display: inline-block" action="/logout" method="post">
-          <button type="submit">Logout</button>
-        </form>
         <button>
           <a href="/admin/addPost">Create Post as <%= currentUser %></a>
         </button>
+        <span> OR </span>
+        <form style="display: inline-block" action="/logout" method="post">
+          <button type="submit">Logout</button>
+        </form>
       </div>
       <% } %>
       <div class="hr"></div>
@@ -59,7 +60,8 @@
             <img src="<%= post.imageUrl %>" alt="post image" />
             <div class="titlebox">
               <p style="font-size: 25px; font-weight: bold">
-                <%= post.title %>
+                <% if(post.title.length > 20) { %> <%= post.title.slice(0,20)
+                %>... <% } else { %> <%= post.title %> <% } %>
               </p>
               <p>Post by <span class=""><%= post.userId.email %></span></p>
               <button>
@@ -71,6 +73,16 @@
           </div>
           <% } %>
         </div>
+      </div>
+      <div class="pagination">
+        <% if(hasNextPage && hasPreviousPage) { %>
+        <a href="/?page=<%= previousPage %>"><button>Previous page</button></a>
+        <a href="/?page=<%= nextPage %>"><button>Next page</button></a>
+        <% } else if (hasNextPage && !hasPreviousPage) { %>
+        <a href="/?page=<%= nextPage %>"><button>Next page</button></a>
+        <% } else if (!hasNextPage && hasPreviousPage) { %>
+        <a href="/?page=<%= previousPage %>"><button>Previous page</button></a>
+        <% } %>
       </div>
     </section>
   </body>

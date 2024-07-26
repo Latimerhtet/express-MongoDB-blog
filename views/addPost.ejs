@@ -9,7 +9,7 @@
   <body>
     <%- include ('./includes/navbar') -%>
     <section class="form-main-div">
-      <form action="/admin" method="post" novalidate>
+      <form action="/admin" method="post" enctype="multipart/form-data">
         <div class="addPostHeading">
           <h2>Add your post here</h2>
           <button>
@@ -31,13 +31,7 @@
         </div>
         <div class="inputDiv">
           <label for="imgurl">Image URL</label>
-          <input
-            type="text"
-            id="imgurl"
-            name="imageUrl"
-            required
-            value="<%= oldData.imageUrl %>"
-          />
+          <input type="file" id="imgurl" name="imageUrl" required />
         </div>
         <div class="inputDiv">
           <label for="description">Description</label>

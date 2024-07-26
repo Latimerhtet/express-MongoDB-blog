@@ -9,7 +9,11 @@
   <body>
     <section class="error-div">
       <div>
-        <p>Page Not found</p>
+        <% if(errorMessage) { %>
+        <p><%= errorMessage %></p>
+        <% } else { %>
+        <p>Page Not found!</p>
+        <% } %>
         <button><a href="/">Go back to home page</a></button>
       </div>
     </section>

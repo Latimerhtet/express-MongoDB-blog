@@ -82,10 +82,12 @@ form {
   cursor: pointer;
 }
 .postBox:hover {
-  border: 2px solid gray;
+  gap: 8px;
+  border: 1px solid gray;
 }
 .postBox img {
   width: 300px;
+  height: 150px;
 }
 .posts-Flexbox {
   display: grid;
@@ -155,6 +157,9 @@ form {
   width: 1000px;
   height: 1px;
   background-color: #000;
+}
+.pagination {
+  margin: 20px 0;
 }
 
 /* responsive */
