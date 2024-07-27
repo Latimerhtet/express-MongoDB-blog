@@ -11,35 +11,41 @@
     ></script>
   </head>
   <body>
+    <%- include ('./includes/navbar') -%>
     <section class="postDetail-Box">
       <div class="postDetail">
         <div class="btnAndtitle">
           <h1><%= post.title %></h1>
-          <div class="buttons">
-            <button>
-              <a href="/"><i class="fa-solid fa-backward"></i></a>
-            </button>
-            <% if(isLogin && currentUserId.toString() ===
-            post.userId._id.toString()) { %>
-            <form action="/admin/delete/<%= post._id %>" method="post">
-              <button type="submit"><i class="fa-solid fa-trash"></i></button>
-            </form>
-            <button>
-              <a href="/admin/edit/<%= post._id %>"
-                ><i class="fa-regular fa-pen-to-square"></i
-              ></a>
-            </button>
-            <% } %>
-          </div>
+          <a href="/"
+            ><button><i class="fa-solid fa-backward"></i></button
+          ></a>
         </div>
-        <p>Posted by <%= post.userId.email %></p>
+        <p class="detailUserInfo">
+          <i class="fa-solid fa-user"></i> <span><%= post.userId.email %></span>
+        </p>
         <% if(time) { %>
-        <p>Uploaded at <%= time %></p>
+        <p class="detailUserInfo">
+          <i class="fa-regular fa-calendar-days"></i> <span><%= time %></span>
+        </p>
+        <div class="buttons">
+          <% if(isLogin && currentUserId.toString() ===
+          post.userId._id.toString()) { %>
+          <button>
+            <a href="/admin/edit/<%= post._id %>"
+              ><i class="fa-regular fa-pen-to-square"></i
+            ></a>
+          </button>
+          <a href="/save/<%= post._id %>"
+            ><button><i class="fa-solid fa-file-arrow-down"></i></button
+          ></a>
+          <form action="/admin/delete/<%= post._id %>" method="post">
+            <button type="submit"><i class="fa-solid fa-trash"></i></button>
+          </form>
+
+          <% } %>
+        </div>
         <% } %> <img src="<%= "/" + post.imageUrl %>" alt="post image" />
         <p><%= post.description %></p>
-        <a style="margin-bottom: 20px" href="/save/<%= post._id %>"
-          ><button>Save as pdf</button></a
-        >
       </div>
     </section>
   </body>

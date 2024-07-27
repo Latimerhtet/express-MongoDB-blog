@@ -12,34 +12,7 @@
   </head>
   <body>
     <%- include ('./includes/navbar') -%>
-    <div class="heroSection-para">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora,
-        consectetur incidunt sed beatae atque commodi eius, ab corporis dolorem
-        nobis aspernatur pariatur quam voluptate, nihil quis quaerat quia. Id,
-        amet. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corporis
-        corrupti praesentium, ex facilis veniam saepe, commodi totam, dolores
-        est reiciendis excepturi illo blanditiis similique? Illo quis sunt esse
-        pariatur at.
-      </p>
-    </div>
     <section class="postsBox">
-      <% if(!isLogin) { %>
-      <div>
-        <button><a href="/login">Login</a></button>
-        <button><a href="/register">Register</a></button>
-      </div>
-      <% } else { %>
-      <div>
-        <button>
-          <a href="/admin/addPost">Create Post as <%= currentUser %></a>
-        </button>
-        <span> OR </span>
-        <form style="display: inline-block" action="/logout" method="post">
-          <button type="submit">Logout</button>
-        </form>
-      </div>
-      <% } %>
       <div class="hr"></div>
       <h2>Recently added Posts</h2>
       <div style="margin: 10px 20px">

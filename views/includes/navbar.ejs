@@ -1,3 +1,19 @@
 <nav>
   <h2><a href="/" class="heading">Blog-Daily.io</a></h2>
+  <div>
+    <% if(!isLogin) { %>
+    <div>
+      <button><a href="/login">Login</a></button>
+      <button><a href="/register">Register</a></button>
+    </div>
+    <% } else { %>
+    <div>
+      <a href="/admin/addPost"> <button>Create Post</button></a>
+      <a href="/admin/profile"><button>Profile</button></a>
+      <form style="display: inline-block" action="/logout" method="post">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+    <% } %>
+  </div>
 </nav>

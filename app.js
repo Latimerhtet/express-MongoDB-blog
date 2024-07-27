@@ -76,6 +76,10 @@ app.use((req, res, next) => {
       next();
     });
 });
+app.use((req, res, next) => {
+  res.locals.isLogin = req.session.isLogin ? true : false;
+  next();
+});
 // routes
 
 app.use(postRoutes);
