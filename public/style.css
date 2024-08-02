@@ -80,27 +80,27 @@ form {
   align-self: flex-start;
 }
 .postBox {
-  width: 350px;
+  width: 320px;
   height: fit-content;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* border: 2px solid gray; */
+  border: 1px solid white;
   padding: 20px;
   cursor: pointer;
 }
 .postBox:hover {
-  gap: 8px;
   border: 1px solid gray;
+  box-shadow: 5px 5px 10px rgba((0), 0, 0, 0.5);
 }
 .postBox img {
-  width: 300px;
+  width: 270px;
   height: 150px;
 }
 .posts-Flexbox {
-  /* width: 70%; */
-  display: grid;
-  grid-template-columns: repeat(3, 370px);
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   justify-items: center;
 }
 .titleBox {
@@ -177,6 +177,60 @@ form {
   display: flex;
   gap: 5px;
   align-items: center;
+}
+
+.profile-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+}
+.profile-head p {
+  padding: 0;
+  margin: 0;
+}
+.own-head {
+  margin: 20px 0;
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.own-head div p {
+  font-size: 23px;
+}
+.premiumAndusername {
+  align-self: flex-end;
+}
+.premium-card p {
+  margin: 0;
+  font-weight: bold;
+}
+.premium-card {
+  color: white;
+  background-image: linear-gradient(
+    to right,
+    rgb(96, 85, 85),
+    rgb(38, 129, 179)
+  );
+  font-size: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 2px solid rgba(0, 0, 0, 0.8); */
+  padding: 15px 20px;
+  border-radius: 20px;
+}
+.premiumBtn {
+  font-size: 17px;
+  letter-spacing: 0.2em;
+  border: 1px solid white;
+  background-color: #494848;
+  transition: all 0.5s;
+}
+.premiumBtn:hover {
+  letter-spacing: 0.1em;
 }
 /* responsive */
 @media (max-width: 1100px) {

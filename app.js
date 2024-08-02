@@ -41,6 +41,7 @@ app.set("views", "views");
 const postRoutes = require("./routes/post");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
+const userRoutes = require("./routes/user");
 const User = require("./models/user");
 const errorPageHandler = require("./controllers/error");
 
@@ -84,6 +85,7 @@ app.use((req, res, next) => {
 
 app.use(postRoutes);
 app.use("/admin", isLogin, adminRoutes);
+app.use(userRoutes);
 app.use(authRoutes);
 
 app.all("*", errorPageHandler.get404Page);

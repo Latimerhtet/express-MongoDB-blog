@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <%- include ('../includes/navbar') -%>
+    <section class="form-main-div">
+      <form action="/admin/setUserName" method="post">
+        <div class="addPostHeading">
+          <h2>Add your Name</h2>
+          <button>
+            <a href="/admin/profile">Back</a>
+          </button>
+        </div>
+        <% if(errorMessage) { %>
+        <p class="errorMessage"><%= errorMessage %></p>
+        <% } %>
+        <div class="inputDiv">
+          <label for="username">Enter username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value="<%= oldData.username %>"
+          />
+        </div>
+        <button type="submit">set</button>
+      </form>
+    </section>
+  </body>
+</html>

@@ -75,7 +75,7 @@ exports.getPosts = (req, res, next) => {
           title: "Posts",
           postsArr: posts,
           isLogin: req.session.isLogin ? true : false,
-          currentUser: req.session.userInfo ? req.session.userInfo.email : "",
+          currentUser: req.session.userInfo ? req.session.userInfo._id : "",
           currentPage: pageNo,
           hasNextPage: POST_PER_PAGE * pageNo < totalPost,
           hasPreviousPage: pageNo > 1,

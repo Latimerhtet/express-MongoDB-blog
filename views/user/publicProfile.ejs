@@ -11,10 +11,17 @@
     ></script>
   </head>
   <body>
-    <%- include ('./includes/navbar') -%>
+    <%- include ('../includes/navbar') -%>
     <section class="postsBox">
       <div class="hr"></div>
-      <h2>Recently added Posts</h2>
+      <div class="profile-head">
+        <i
+          class="fa-regular fa-circle-user"
+          style="font-size: 55px; margin-bottom: 0"
+        ></i>
+        <p><%= currentUser %></p>
+      </div>
+      <h2>Recent posts added by <%= currentUser %></h2>
       <div style="margin: 10px 20px">
         <% if(postsArr.length === 0 && isLogin) { %>
         <div class="postBox">
@@ -30,28 +37,13 @@
         <div class="posts-Flexbox">
           <% for(let post of postsArr) { %>
           <div class="postBox">
-            <img src="<%= post.imageUrl %>" alt="post image" />
+            <img src="/<%= post.imageUrl %>" alt="post image" />
             <div class="titlebox">
               <p style="font-size: 25px; font-weight: bold">
                 <% if(post.title.length > 20) { %> <%= post.title.slice(0,20)
                 %>... <% } else { %> <%= post.title %> <% } %>
               </p>
-              <p>
-                Post by <% if(post.userId._id.toString() ==
-                currentUser.toString()) { %>
-                <a
-                  href="/admin/profile"
-                  style="text-decoration: underline; color: black"
-                  ><span><%= post.userId.email %></span></a
-                >
-                <% } else { %>
-                <a
-                  href="/profile/<%= post.userId._id %>"
-                  style="text-decoration: underline; color: black"
-                  ><span><%= post.userId.email %></span></a
-                >
-                <% } %>
-              </p>
+              <p>Post by <span class=""><%= post.userId.email %></span></p>
               <button>
                 <a href="/post/<%= post._id %>"
                   >See more <i class="fa-solid fa-forward"></i
@@ -64,12 +56,22 @@
       </div>
       <div class="pagination">
         <% if(hasNextPage && hasPreviousPage) { %>
-        <a href="/?page=<%= previousPage %>"><button>Previous page</button></a>
-        <a href="/?page=<%= nextPage %>"><button>Next page</button></a>
+        <a
+          href="/profile/<%= postsArr[0].userId._id %>/?page=<%= previousPage %>"
+          ><button>Previous page</button></a
+        >
+        <a href="/profile/<%= postsArr[0].userId._id %>/?page=<%= nextPage %>"
+          ><button>Next page</button></a
+        >
         <% } else if (hasNextPage && !hasPreviousPage) { %>
-        <a href="/?page=<%= nextPage %>"><button>Next page</button></a>
+        <a href="/profile/<%= postsArr[0].userId._id %>/?page=<%= nextPage %>"
+          ><button>Next page</button></a
+        >
         <% } else if (!hasNextPage && hasPreviousPage) { %>
-        <a href="/?page=<%= previousPage %>"><button>Previous page</button></a>
+        <a
+          href="/profile/<%= postsArr[0].userId._id %>/?page=<%= previousPage %>"
+          ><button>Previous page</button></a
+        >
         <% } %>
       </div>
     </section>
