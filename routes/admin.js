@@ -3,6 +3,7 @@ const postControllers = require("../controllers/post");
 const userProfileControllers = require("../controllers/user");
 const router = express.Router();
 const { body } = require("express-validator");
+const { isPremium } = require("../middleware/is-premium");
 router.get("/addPost", postControllers.renderAddPostPage);
 router.post(
   "/",
@@ -47,4 +48,15 @@ router.post(
 
 router.get("/premium", userProfileControllers.renderPremiumPage);
 
+router.get("/subscription-success", userProfileControllers.getSuccessfulPage);
+
+router.get("/premium-details", userProfileControllers.getPremiumDetails);
+
+router.get(
+  "/upload-image",
+  isPremium,
+  userProfileControllers.getprofileuploadPage
+);
+
+router.post("/setProfile", isPremium, userProfileControllers.setProileImg);
 module.exports = router;

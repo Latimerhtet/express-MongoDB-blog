@@ -19,6 +19,16 @@ const userSchema = new Schema({
     unique: true,
     minLength: 3,
   },
+  isPremium: {
+    type: Boolean,
+    default: false,
+  },
+  premium_session_key: {
+    type: String,
+  },
+  imgUrl: {
+    type: String,
+  },
   resetToken: String,
   tokenExpiration: Date,
 });

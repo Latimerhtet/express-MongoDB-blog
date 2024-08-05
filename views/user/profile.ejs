@@ -11,24 +11,43 @@
     ></script>
   </head>
   <body>
-    <%- include ('../includes/navbar') -%>
+    <%- include ('../includes/navbar') -%> <% if(postsArr.length > 0) { %>
     <section class="postsBox">
       <div class="hr"></div>
-      <div class="own-head">
-        <i
-          class="fa-regular fa-circle-user"
-          style="font-size: 55px; margin-bottom: 0"
-        ></i>
-        <div>
-          <p><%= currentUser %></p>
-          <p><%= postsArr[0].userId.username %></p>
+      <div class="profile-box">
+        <div class="own-head">
+          <% if(postsArr[0].userId.imgUrl && premiumUser) { %> <img
+          class="profileImg" src="<%= "/" + postsArr[0].userId.imgUrl %>"
+          alt="post image" /> <% }else { %>
+          <i
+            class="fa-regular fa-circle-user"
+            style="font-size: 55px; margin-bottom: 0"
+          ></i>
+          <% } %>
+
+          <div>
+            <p><%= currentUser %></p>
+            <% if(postsArr[0].userId.username) { %>
+            <p>
+              <%= postsArr[0].userId.username %> <% if(premiumUser) { %>
+              <i class="fa-solid fa-star animated_star"></i>
+              <% } %>
+            </p>
+            <% } else { %>
+            <p><%= postsArr[0].userId.username %></p>
+            <% } %>
+          </div>
+        </div>
+        <div class="premiumAndusername">
+          <a href="/admin/username"><button>Set username</button></a>
+          <% if(!premiumUser) { %>
+          <a href="/admin/premium"><button>Buy premium</button></a>
+          <% }else {%>
+          <a href="/admin/upload-image"><button>Upload profile</button></a>
+          <a href="/admin/premium-details"><button>Premium status</button></a>
+          <% } %>
         </div>
       </div>
-      <div class="premiumAndusername">
-        <a href="/admin/premium"><button>Buy premium</button></a>
-        <a href="/admin/username"><button>Set username</button></a>
-      </div>
-      <h2>Posts added by you</h2>
       <div style="margin: 10px 20px">
         <% if(postsArr.length === 0 && isLogin) { %>
         <div class="postBox">
@@ -40,7 +59,7 @@
             <a href="/admin/addPost">Create new Post</a>
           </button>
         </div>
-        <% } %>
+        <% } else { %>
         <div class="posts-Flexbox">
           <% for(let post of postsArr) { %>
           <div class="postBox">
@@ -50,7 +69,6 @@
                 <% if(post.title.length > 20) { %> <%= post.title.slice(0,20)
                 %>... <% } else { %> <%= post.title %> <% } %>
               </p>
-              <p>Post by <span class=""><%= post.userId.email %></span></p>
               <button>
                 <a href="/post/<%= post._id %>"
                   >See more <i class="fa-solid fa-forward"></i
@@ -58,7 +76,7 @@
               </button>
             </div>
           </div>
-          <% } %>
+          <% } }%>
         </div>
       </div>
       <div class="pagination">
@@ -80,5 +98,23 @@
         <% } %>
       </div>
     </section>
+    <% } else { %>
+    <div class="profile-head">
+      <i
+        class="fa-regular fa-circle-user"
+        style="font-size: 55px; margin-bottom: 0"
+      ></i>
+      <p><%= currentUser %></p>
+    </div>
+    <div class="postBox">
+      <div>
+        <p>There is no posts to see</p>
+        <p>You can start create your own post!!</p>
+      </div>
+      <button>
+        <a href="/admin/addPost">Create new Post</a>
+      </button>
+    </div>
+    <% } %>
   </body>
 </html>

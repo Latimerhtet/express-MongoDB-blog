@@ -64,7 +64,7 @@ exports.getPosts = (req, res, next) => {
       totalPost = totalPostCount;
       return Post.find()
         .select("title imageUrl")
-        .populate("userId", "email")
+        .populate("userId", "email imgUrl")
         .sort({ createdAt: -1 })
         .skip((pageNo - 1) * POST_PER_PAGE)
         .limit(POST_PER_PAGE);
@@ -101,7 +101,7 @@ exports.getPost = (req, res, next) => {
   const postId = req.params.postId;
   const isLogin = req.session.isLogin ? true : false;
   Post.findById(postId)
-    .populate("userId", "email")
+    .populate("userId", "email isPremium")
     .then((post) => {
       console.log(post);
       res.render("postDetail", {
@@ -112,6 +112,9 @@ exports.getPost = (req, res, next) => {
         time: post.createdAt
           ? formatISO(post.createdAt, { representation: "date" })
           : undefined,
+        currentuserPremiumStatus: req.session
+          ? req.session.userInfo.isPremium
+          : false,
       });
     })
     .catch((err) => {

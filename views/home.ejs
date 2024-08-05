@@ -36,22 +36,32 @@
                 <% if(post.title.length > 20) { %> <%= post.title.slice(0,20)
                 %>... <% } else { %> <%= post.title %> <% } %>
               </p>
-              <p>
-                Post by <% if(post.userId._id.toString() ==
-                currentUser.toString()) { %>
-                <a
-                  href="/admin/profile"
-                  style="text-decoration: underline; color: black"
-                  ><span><%= post.userId.email %></span></a
-                >
-                <% } else { %>
-                <a
-                  href="/profile/<%= post.userId._id %>"
-                  style="text-decoration: underline; color: black"
-                  ><span><%= post.userId.email %></span></a
-                >
+              <div class="postdirectionlink">
+                <% if(post.userId.imgUrl) { %> <img class="homePage_profile"
+                style="width: 35px; height: 35px; border-radius: 50%;" src="<%=
+                "/" + post.userId.imgUrl %>" alt="post image" /> <% }else { %>
+                <i
+                  class="fa-regular fa-circle-user"
+                  style="font-size: 30px; margin-bottom: 0"
+                ></i>
                 <% } %>
-              </p>
+                <p>
+                  <% if(post.userId._id.toString() == currentUser.toString()) {
+                  %>
+                  <a
+                    href="/admin/profile"
+                    style="text-decoration: underline; color: black"
+                    ><span><%= post.userId.email %></span></a
+                  >
+                  <% } else { %>
+                  <a
+                    href="/profile/<%= post.userId._id %>"
+                    style="text-decoration: underline; color: black"
+                    ><span><%= post.userId.email %></span></a
+                  >
+                  <% } %>
+                </p>
+              </div>
               <button>
                 <a href="/post/<%= post._id %>"
                   >See more <i class="fa-solid fa-forward"></i

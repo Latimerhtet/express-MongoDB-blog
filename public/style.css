@@ -189,6 +189,19 @@ form {
   padding: 0;
   margin: 0;
 }
+.postdirectionlink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* own user profile page */
+.profile-box {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .own-head {
   margin: 20px 0;
   align-self: flex-start;
@@ -200,8 +213,17 @@ form {
 .own-head div p {
   font-size: 23px;
 }
+.profileImg {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+}
+
 .premiumAndusername {
-  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
 }
 .premium-card p {
   margin: 0;
@@ -231,6 +253,59 @@ form {
 }
 .premiumBtn:hover {
   letter-spacing: 0.1em;
+}
+@keyframes wiggle {
+  0%,
+  7% {
+    transform: rotateZ(0);
+  }
+  15% {
+    transform: rotateZ(-15deg);
+  }
+  20% {
+    transform: rotateZ(10deg);
+  }
+  25% {
+    transform: rotateZ(-10deg);
+  }
+  30% {
+    transform: rotateZ(6deg);
+  }
+  35% {
+    transform: rotateZ(-4deg);
+  }
+  40%,
+  100% {
+    transform: rotateZ(0);
+  }
+}
+
+.animated_star {
+  width: 50px;
+  height: 50px;
+  animation: wiggle 2s linear infinite;
+}
+
+.premiumSuccessful {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+/* premium details style  */
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th,
+td {
+  padding: 5px;
+  text-align: center;
+}
+tr td:last-child {
+  font-weight: bold;
+  color: green;
 }
 /* responsive */
 @media (max-width: 1100px) {

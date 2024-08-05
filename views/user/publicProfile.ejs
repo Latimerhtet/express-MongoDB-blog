@@ -15,10 +15,20 @@
     <section class="postsBox">
       <div class="hr"></div>
       <div class="profile-head">
+        <% if(currentUserProfile) { %> <img class="profileImg" src="<%= "/" +
+        postsArr[0].userId.imgUrl %>" alt="post image" /> <% } else { %>
         <i
           class="fa-regular fa-circle-user"
           style="font-size: 55px; margin-bottom: 0"
         ></i>
+        <% } %>
+        <p>
+          <% if(postsArr[0].userId.username) { %> <%=
+          postsArr[0].userId.username %> <% } %> <%
+          if(postsArr[0].userId.isPremium) { %>
+          <i class="fa-solid fa-star animated_star"></i>
+          <% } %>
+        </p>
         <p><%= currentUser %></p>
       </div>
       <h2>Recent posts added by <%= currentUser %></h2>

@@ -35,9 +35,11 @@
               ><i class="fa-regular fa-pen-to-square"></i
             ></a>
           </button>
+          <% if(currentuserPremiumStatus) {%>
           <a href="/save/<%= post._id %>"
             ><button><i class="fa-solid fa-file-arrow-down"></i></button
           ></a>
+          <% } %>
           <form action="/admin/delete/<%= post._id %>" method="post">
             <button type="submit"><i class="fa-solid fa-trash"></i></button>
           </form>

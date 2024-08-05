@@ -16,8 +16,20 @@
           <li>Animated profile badge</li>
           <li>Setting username unlimited times</li>
         </ul>
-        <a href=""><button class="premiumBtn">Buy premium</button></a>
+        <button class="premiumBtn">Buy premium</button>
       </div>
     </section>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+      const stripe = Stripe(
+        "pk_test_51PjYBQP7lSRf3HTJ0ZdiwWsHCEe62S8In7CsK6AmfDdDIeho4xu49sKfgowh5oVagOyzdM6i3spcN4kZBsPOV11N00fsmBzc3L"
+      );
+      let checkoutBtn = document.querySelector(".premiumBtn");
+      checkoutBtn.addEventListener("click", function () {
+        stripe.redirectToCheckout({
+          sessionId: "<%= session_id %>",
+        });
+      });
+    </script>
   </body>
 </html>

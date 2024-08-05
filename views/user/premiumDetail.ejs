@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <%- include ('../includes/navbar') -%>
+    <section class="premiumSuccessful">
+      <h2>Premium Details</h2>
+      <table border="2">
+        <thead>
+          <th>Customer Id</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Country</th>
+          <th>Total</th>
+          <th>Invoice Id</th>
+          <th>Payment Status</th>
+        </thead>
+        <tr>
+          <td><%= customer_id %></td>
+          <td><%= customer_name %></td>
+          <td><%= customer_email %></td>
+          <td><%= country %></td>
+          <td>$ <%= amountTotal %></td>
+          <td><%= invoice_id %></td>
+          <td><%= paymentStatus.toUpperCase() %></td>
+        </tr>
+      </table>
+      <a href="/admin/profile"><button>Go back to your profile</button></a>
+    </section>
+  </body>
+</html>
