@@ -112,9 +112,7 @@ exports.getPost = (req, res, next) => {
         time: post.createdAt
           ? formatISO(post.createdAt, { representation: "date" })
           : undefined,
-        currentuserPremiumStatus: req.session
-          ? req.session.userInfo.isPremium
-          : false,
+        currentuserPremiumStatus: req.session.userInfo.isPremium,
       });
     })
     .catch((err) => {

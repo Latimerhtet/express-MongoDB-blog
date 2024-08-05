@@ -39,8 +39,11 @@
           </div>
         </div>
         <div class="premiumAndusername">
+          <% if(postsArr[0].userId.username) { %>
+          <a href="/admin/username"><button>Update username</button></a>
+          <% }else { %>
           <a href="/admin/username"><button>Set username</button></a>
-          <% if(!premiumUser) { %>
+          <% } %> <% if(!premiumUser) { %>
           <a href="/admin/premium"><button>Buy premium</button></a>
           <% }else {%>
           <a href="/admin/upload-image"><button>Upload profile</button></a>

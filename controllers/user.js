@@ -38,7 +38,7 @@ exports.getprofile = (req, res, next) => {
           nextPage: pageNo + 1,
           previousPage: pageNo - 1,
           currentUser: req.session.userInfo ? req.session.userInfo.email : null,
-          premiumUser: req.session.userInfo.isPremium,
+          premiumUser: posts[0].userId.isPremium,
         });
       }
     })
@@ -170,18 +170,18 @@ exports.renderPremiumPage = (req, res, next) => {
 // rendering subscription successful page
 exports.getSuccessfulPage = (req, res, next) => {
   const session_id = req.query.session_id;
-  if (!session_id || !session_id.includes("cr_test_")) {
+  console.log(session_id);
+  if (!session_id || !session_id.includes("cs_test_")) {
     return res.redirect("/admin/profile");
   }
   User.findById(req.user._id)
     .then((user) => {
       user.isPremium = true;
       user.premium_session_key = session_id;
-      user.save();
-    })
-    .then((result) => {
-      res.render("user/subscription-success", {
-        title: "Subscription successful!",
+      return user.save().then(() => {
+        res.render("user/subscription-success", {
+          title: "Subscription successful!",
+        });
       });
     })
     .catch((err) => {
