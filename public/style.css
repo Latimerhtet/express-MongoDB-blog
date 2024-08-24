@@ -113,10 +113,10 @@ form {
   justify-content: center;
 }
 .postDetail {
-  width: 600px;
+  width: 50%;
 }
 .postDetail img {
-  width: 600px;
+  width: 100%;
 }
 .btnAndtitle {
   display: flex;
@@ -321,7 +321,15 @@ tr td:last-child {
   }
 }
 
-@media (max-width: 500px) {
+@media only screen and (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .profile-box {
+    flex-direction: column;
+  }
   .posts-Flexbox {
     margin-left: 50px;
     grid-template-columns: repeat(1, 400px);
